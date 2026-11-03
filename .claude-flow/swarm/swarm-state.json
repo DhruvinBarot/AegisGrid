@@ -1,0 +1,71 @@
+{
+  "swarms": {
+    "swarm-1792950525580-y6rmb3": {
+      "swarmId": "swarm-1792950525580-y6rmb3",
+      "topology": "hierarchical",
+      "maxAgents": 6,
+      "status": "terminated",
+      "agents": [],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical",
+        "maxAgents": 6,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-10-25T17:48:45.580Z",
+      "updatedAt": "2026-10-26T21:30:44.434Z",
+      "terminationReason": "no pid recorded and heartbeat is 28h stale"
+    },
+    "swarm-1793050256342-cssl6a": {
+      "swarmId": "swarm-1793050256342-cssl6a",
+      "topology": "hierarchical",
+      "maxAgents": 6,
+      "status": "terminated",
+      "agents": [
+        "agent-1793050315163-splbqz"
+      ],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical",
+        "maxAgents": 6,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-10-26T21:30:56.342Z",
+      "updatedAt": "2026-10-30T16:36:18.765Z",
+      "terminationReason": "no pid recorded and heartbeat is 91h stale"
+    },
+    "swarm-1793053003748-atj23b": {
+      "swarmId": "swarm-1793053003748-atj23b",
+      "topology": "hierarchical",
+      "maxAgents": 6,
+      "status": "terminated",
+      "agents": [
+        "agent-1793053033315-krp9my",
+        "agent-1793053034880-0azlbg",
+        "agent-1793053035834-sknt6a",
+        "agent-1793053036553-kjaagt",
+        "agent-1793053037438-hk6cp3",
+        "agent-1793053038358-dd11xo"
+      ],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical",
+        "maxAgents": 6,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-10-26T22:16:43.748Z",
+      "updatedAt": "2026-10-30T16:36:18.765Z",
+      "terminationReason": "no pid recorded and heartbeat is 90h stale"
+    }
+  },
+  "version": "3.0.0"
+}

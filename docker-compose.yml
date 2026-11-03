@@ -1,0 +1,87 @@
+name: aegisgrid
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17
+    environment:
+      POSTGRES_USER: aegis
+      POSTGRES_PASSWORD: aegis
+      POSTGRES_DB: aegisgrid
+      # Local-dev passwords for the application roles, consumed by infra/db/init/ on first start.
+      AEGIS_MIGRATOR_PASSWORD: ${AEGIS_MIGRATOR_PASSWORD:-aegis_migrator}
+      AEGIS_API_PASSWORD: ${AEGIS_API_PASSWORD:-aegis_api}
+      AEGIS_WORKER_PASSWORD: ${AEGIS_WORKER_PASSWORD:-aegis_worker}
+      AEGIS_SYSTEM_PASSWORD: ${AEGIS_SYSTEM_PASSWORD:-aegis_system}
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aegis -d aegisgrid"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - "127.0.0.1:${REDIS_HOST_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: ../infra/docker/backend.Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      AEGIS_DATABASE_URL: postgresql+psycopg://aegis_api:${AEGIS_API_PASSWORD:-aegis_api}@postgres:5432/aegisgrid
+      AEGIS_REDIS_URL: redis://redis:6379/0
+      AEGIS_ENV: development
+      WATCHFILES_FORCE_POLLING: "true"   # bind mounts on Windows don't deliver inotify events
+      PYTHONDONTWRITEBYTECODE: "1"       # keep container /app paths out of the host's shared __pycache__
+    ports:
+      - "127.0.0.1:${API_HOST_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  # One-shot, as aegis_migrator: `docker compose run --rm migrate`. The api never gets these credentials.
+  migrate:
+    profiles: ["tools"]
+    build:
+      context: ./backend
+      dockerfile: ../infra/docker/backend.Dockerfile
+    command: alembic upgrade head
+    environment:
+      AEGIS_ENV: development
+      AEGIS_MIGRATOR_DATABASE_URL: postgresql+psycopg://aegis_migrator:${AEGIS_MIGRATOR_PASSWORD:-aegis_migrator}@postgres:5432/aegisgrid
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../infra/docker/frontend.Dockerfile
+    environment:
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

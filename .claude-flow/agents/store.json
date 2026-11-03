@@ -1,0 +1,104 @@
+{
+  "agents": {
+    "agent-1793050315163-splbqz": {
+      "agentId": "agent-1793050315163-splbqz",
+      "agentType": "system-architect",
+      "name": "lead-architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "opus"
+      },
+      "createdAt": "2026-10-26T21:31:55.164Z",
+      "domain": "architecture",
+      "model": "opus",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053033315-krp9my": {
+      "agentId": "agent-1793053033315-krp9my",
+      "agentType": "backend-dev",
+      "name": "ws-a-foundation",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 2,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-10-26T22:17:13.316Z",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053034880-0azlbg": {
+      "agentId": "agent-1793053034880-0azlbg",
+      "agentType": "backend-dev",
+      "name": "ws-b-identity",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 2,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-10-26T22:17:14.880Z",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053035834-sknt6a": {
+      "agentId": "agent-1793053035834-sknt6a",
+      "agentType": "backend-dev",
+      "name": "ws-c-orgs",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 1,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-10-26T22:17:15.834Z",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053036553-kjaagt": {
+      "agentId": "agent-1793053036553-kjaagt",
+      "agentType": "tester",
+      "name": "ws-d-tests",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-10-26T22:17:16.553Z",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053037438-hk6cp3": {
+      "agentId": "agent-1793053037438-hk6cp3",
+      "agentType": "security-auditor",
+      "name": "ws-e-security",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 1,
+      "config": {
+        "model": "opus"
+      },
+      "createdAt": "2026-10-26T22:17:17.438Z",
+      "model": "opus",
+      "modelRoutedBy": "explicit"
+    },
+    "agent-1793053038358-dd11xo": {
+      "agentId": "agent-1793053038358-dd11xo",
+      "agentType": "documenter",
+      "name": "docs-writer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "haiku"
+      },
+      "createdAt": "2026-10-26T22:17:18.359Z",
+      "model": "haiku",
+      "modelRoutedBy": "explicit"
+    }
+  },
+  "version": "3.0.0"
+}

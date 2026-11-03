@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      AEGIS_ENV: test
+      # Same values tests/conftest.py derives; compose publishes postgres on 5433 and redis on 6379.
+      POSTGRES_HOST_PORT: "5433"
+      AEGIS_DATABASE_URL: postgresql+psycopg://aegis_api:aegis_api@127.0.0.1:5433/aegisgrid_test
+      AEGIS_MIGRATOR_DATABASE_URL: postgresql+psycopg://aegis_migrator:aegis_migrator@127.0.0.1:5433/aegisgrid_test
+      AEGIS_REDIS_URL: redis://127.0.0.1:6379/0
+    steps:
+      - uses: actions/checkout@v4
+
+      # Runs infra/db/init (role + database bootstrap) exactly as in local dev.
+      - name: Start postgres and redis
+        run: docker compose up -d --wait postgres redis
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.5"
+
+      - name: Install dependencies
+        working-directory: backend
+        run: uv sync --frozen
+
+      - name: Lint
+        working-directory: backend
+        run: uv run ruff check .
+
+      - name: Type check
+        working-directory: backend
+        run: uv run pyright
+
+      - name: Test (includes the cross-org 404 gate)
+        working-directory: backend
+        run: uv run pytest -q
+
+      - name: Compose logs on failure
+        if: failure()
+        run: docker compose logs --no-color postgres redis

@@ -1,0 +1,363 @@
+{
+  "tasks": {
+    "task-1793050315507-jk9fpn": {
+      "taskId": "task-1793050315507-jk9fpn",
+      "type": "feature",
+      "description": "Save finalized AegisGrid architecture (v2 + validation changes + user revisions) to docs/architecture/",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [],
+      "tags": [
+        "aegisgrid",
+        "docs",
+        "phase1-prep"
+      ],
+      "createdAt": "2026-10-26T21:31:55.507Z",
+      "startedAt": null,
+      "completedAt": "2026-10-26T21:40:22.454Z",
+      "result": {
+        "files": [
+          "docs/architecture/README.md",
+          "01-tenancy-and-data.md",
+          "02-execution-runtime.md",
+          "03-security-and-privacy.md",
+          "04-observability-and-evals.md",
+          "05-api-frontend-deploy.md",
+          "06-roadmap.md"
+        ]
+      }
+    },
+    "task-1793050315624-hkmlbb": {
+      "taskId": "task-1793050315624-hkmlbb",
+      "type": "feature",
+      "description": "Write ADRs for the load-bearing AegisGrid decisions to docs/adr/",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [],
+      "tags": [
+        "aegisgrid",
+        "adr",
+        "phase1-prep"
+      ],
+      "createdAt": "2026-10-26T21:31:55.624Z",
+      "startedAt": null,
+      "completedAt": "2026-10-26T21:40:22.673Z",
+      "result": {
+        "files": "docs/adr/README.md + 0001..0020",
+        "links_checked": "0 broken"
+      }
+    },
+    "task-1793050315743-5gjvgw": {
+      "taskId": "task-1793050315743-5gjvgw",
+      "type": "research",
+      "description": "Reconcile Phase 0 repo contents with roadmap; apply approved hygiene (.gitignore); propose exact Phase 1 scope",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [],
+      "tags": [
+        "aegisgrid",
+        "phase0",
+        "phase1-scope"
+      ],
+      "createdAt": "2026-10-26T21:31:55.743Z",
+      "startedAt": null,
+      "completedAt": "2026-10-26T21:40:22.941Z",
+      "result": {
+        "edits": [
+          ".gitignore (+.swarm/, undefined/)",
+          "README.md (docs/ in layout)",
+          "backend/app/core/cache.py (comment pointer)"
+        ],
+        "phase0": "complete; gaps listed in docs/architecture/06-roadmap.md#phase-0-status"
+      }
+    },
+    "task-1793053063126-2oio8a": {
+      "taskId": "task-1793053063126-2oio8a",
+      "type": "feature",
+      "description": "P1-A Foundation & DB: psycopg3, DB roles (bootstrap superuser init-only; migrator/api/worker/system), compose, config, pgvector verify+pin, core ids/errors/tenancy/auth-contract, full Phase-1 schema + migration 0001, router stubs, test fixtures",
+      "priority": "critical",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053033315-krp9my"
+      ],
+      "tags": [
+        "phase1",
+        "ws-a",
+        "sonnet"
+      ],
+      "createdAt": "2026-10-26T22:17:43.126Z",
+      "startedAt": "2026-10-26T22:18:21.871Z",
+      "completedAt": "2026-10-26T22:30:57.004Z",
+      "result": {
+        "validated_by_lead": "ruff clean, pyright 0 errors, pytest 30 passed",
+        "pgvector": "0.8.7 found; compose pinned to pgvector/pgvector:0.8.7-pg17",
+        "roles": "migrator/api/worker/system created by infra/db/init/01-roles-and-databases.sh; api: CRUD on 12 control tables, SELECT/INSERT on audit_log",
+        "migration": "0001_initial_schema up/down/up clean on aegisgrid + aegisgrid_test",
+        "followups": [
+          "README/.env.example -> docs-writer",
+          ".gitattributes *.sh eol=lf -> ws-d",
+          "CI must run role bootstrap -> ws-d"
+        ]
+      }
+    },
+    "task-1793053063396-ri6w0r": {
+      "taskId": "task-1793053063396-ri6w0r",
+      "type": "research",
+      "description": "P1-E1 Security review (foundation): tenancy guard, schema/composite FKs, DB roles+grants, audit trigger, auth contract. Read-only. Gate before B/C.",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053037438-hk6cp3"
+      ],
+      "tags": [
+        "phase1",
+        "ws-e",
+        "opus",
+        "depends:P1-A"
+      ],
+      "createdAt": "2026-10-26T22:17:43.396Z",
+      "startedAt": "2026-10-26T22:59:42.170Z",
+      "completedAt": "2026-10-26T23:02:12.179Z",
+      "result": {
+        "findings": 16,
+        "high": [
+          "E1-1 guard misses non-top-level tenant tables",
+          "E1-2 flush writes unchecked"
+        ],
+        "must_fix_before_BC": [
+          "E1-1",
+          "E1-2",
+          "E1-5",
+          "E1-6",
+          "E1-10"
+        ],
+        "stored": "aegisgrid/phase1-e1-findings"
+      }
+    },
+    "task-1793053063720-e8lv8g": {
+      "taskId": "task-1793053063720-e8lv8g",
+      "type": "feature",
+      "description": "P1-B1 Identity core: IdentityProvider boundary + password provider, register/login/refresh(rotation+reuse)/logout/logout-all, signing keys + JWKS, /me, get_current_principal (JWT + API-key auth), login rate limit (prod fail-closed, dev fail-open+warning)",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053034880-0azlbg"
+      ],
+      "tags": [
+        "phase1",
+        "ws-b",
+        "sonnet",
+        "depends:P1-E1"
+      ],
+      "createdAt": "2026-10-26T22:17:43.720Z",
+      "startedAt": "2026-10-26T23:31:56.583Z",
+      "completedAt": "2026-10-26T23:44:40.341Z",
+      "result": {
+        "lead_gate": "full suite ruff clean, pyright 0, pytest 100 passed",
+        "endpoints": "/auth/register,login,refresh,logout,logout-all, /.well-known/jwks.json, /me",
+        "followups_to_B2": [
+          "move identity routes under /v1 (JWKS stays at root), cookie path /v1/auth/refresh"
+        ],
+        "known_limits": [
+          "sessions.last_seen_at and api_keys.last_used_at not updated",
+          "no X-Forwarded-For handling (rate limit keys on request.client.host)",
+          "concurrent first sign could create two active keys"
+        ]
+      }
+    },
+    "task-1793053064064-xeer1z": {
+      "taskId": "task-1793053064064-xeer1z",
+      "type": "feature",
+      "description": "P1-C Orgs/RBAC/envs/audit: orgs CRUD, /me/organizations, memberships, invitations (dev-only raw token exposure), six-role map + require() -> OrgContext, grant rules, last-owner lock, environment seeding (prod protected), audit-log API",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053035834-sknt6a"
+      ],
+      "tags": [
+        "phase1",
+        "ws-c",
+        "sonnet",
+        "depends:P1-E1",
+        "parallel-with:P1-B1"
+      ],
+      "createdAt": "2026-10-26T22:17:44.064Z",
+      "startedAt": "2026-10-26T23:31:57.656Z",
+      "completedAt": "2026-10-26T23:44:40.500Z",
+      "result": {
+        "lead_gate": "full suite 100 passed",
+        "rbac": "rank viewer<approver<operator<developer<admin<owner; admin/owner write; developer +apikeys:write (B2 enforces own keys, non-protected envs)",
+        "known_limits": [
+          "last-owner FOR UPDATE not race-tested (single rolled-back tx in tests)",
+          "env-scoped API keys not yet restricted on environment endpoints",
+          "no environment soft-delete endpoint"
+        ]
+      }
+    },
+    "task-1793053064289-o763ub": {
+      "taskId": "task-1793053064289-o763ub",
+      "type": "feature",
+      "description": "P1-B2 Service accounts + API key management endpoints (create SA with role, issue/revoke keys, scopes subset, human-only actions) using require() from P1-C",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053034880-0azlbg"
+      ],
+      "tags": [
+        "phase1",
+        "ws-b",
+        "sonnet",
+        "depends:P1-B1,P1-C"
+      ],
+      "createdAt": "2026-10-26T22:17:44.289Z",
+      "startedAt": "2026-10-26T23:44:41.428Z",
+      "completedAt": "2026-10-26T23:50:29.704Z",
+      "result": {
+        "lead_gate": "ruff clean, pyright 0, pytest 109 passed",
+        "endpoints": "/v1/orgs/{org}/service-accounts (+/keys); identity moved to /v1/auth/*, /v1/me; JWKS at root; cookie path /v1/auth/refresh",
+        "rules": "mutations human-only; SA role <= caller, never owner/admin; key scopes subset of SA role ∩ caller perms; expiry <=365d; developer own-SA + non-protected env; secret shown once",
+        "known_limits": [
+          "api_keys.last_used_at not updated",
+          "SA delete = revoke keys + delete membership (no soft-delete column)"
+        ]
+      }
+    },
+    "task-1793053064530-nugi0i": {
+      "taskId": "task-1793053064530-nugi0i",
+      "type": "feature",
+      "description": "P1-D Tests & validation: tests/integration/** (cross-org 404 meta-test, missing-org-context, refresh reuse, last owner, grant rules, invite lifecycle, API-key scope/revocation, JWT cases, audit immutability, import boundary) + .github/workflows/ci.yml (pytest, ruff, pyright)",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053036553-kjaagt"
+      ],
+      "tags": [
+        "phase1",
+        "ws-d",
+        "sonnet",
+        "depends:P1-B2,P1-C"
+      ],
+      "createdAt": "2026-10-26T22:17:44.530Z",
+      "startedAt": "2026-10-26T23:50:30.192Z",
+      "completedAt": "2026-10-30T15:04:48.035Z",
+      "result": {
+        "pytest": "208 passed",
+        "ruff": "clean",
+        "pyright": "0 errors after typing fix in test_cross_org_404.py"
+      }
+    },
+    "task-1793053064868-avg4nb": {
+      "taskId": "task-1793053064868-avg4nb",
+      "type": "research",
+      "description": "P1-E2 Final Phase 1 security review (read-only; defects documented before correction, fixes routed to file owners)",
+      "priority": "high",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053037438-hk6cp3"
+      ],
+      "tags": [
+        "phase1",
+        "ws-e",
+        "opus",
+        "depends:P1-D"
+      ],
+      "createdAt": "2026-10-26T22:17:44.868Z",
+      "startedAt": "2026-10-30T15:04:48.301Z",
+      "completedAt": "2026-10-30T15:20:23.490Z",
+      "result": {
+        "findings_memory": "aegisgrid/phase1-e2-findings",
+        "fixed": 10,
+        "deferred": 9,
+        "pytest": "227 passed, also from an empty volume",
+        "alembic": "0001-0002 upgrade/downgrade round trip clean"
+      }
+    },
+    "task-1793053065172-ek6uiy": {
+      "taskId": "task-1793053065172-ek6uiy",
+      "type": "feature",
+      "description": "P1-DOCS README config/setup, .env.example, roadmap Phase 1 status",
+      "priority": "normal",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053038358-dd11xo"
+      ],
+      "tags": [
+        "phase1",
+        "docs",
+        "haiku",
+        "depends:P1-D"
+      ],
+      "createdAt": "2026-10-26T22:17:45.172Z",
+      "startedAt": "2026-10-30T15:22:26.526Z",
+      "completedAt": "2026-10-30T16:46:19.010Z",
+      "result": {
+        "updated": [
+          "README.md",
+          ".env.example",
+          "docs/architecture/06-roadmap.md",
+          "docs/adr/0005-identity-and-tokens.md"
+        ],
+        "env_example": "placeholders only; scan clean; parses via Settings"
+      }
+    },
+    "task-1793055731686-cg9fts": {
+      "taskId": "task-1793055731686-cg9fts",
+      "type": "bugfix",
+      "description": "P1-A-FIX: fix E1 findings in foundation (E1-1,2,3,4,5,6,7,9 helper,10 contract,11,13,14,15) with tests; gate before B/C",
+      "priority": "critical",
+      "status": "completed",
+      "progress": 100,
+      "assignedTo": [
+        "agent-1793053033315-krp9my"
+      ],
+      "tags": [
+        "phase1",
+        "ws-a",
+        "sonnet",
+        "security-fix",
+        "depends:P1-E1"
+      ],
+      "createdAt": "2026-10-26T23:02:11.686Z",
+      "startedAt": "2026-10-26T23:02:37.052Z",
+      "completedAt": "2026-10-26T23:31:53.970Z",
+      "result": {
+        "lead_validation": "ruff clean, pyright 0, pytest 46 passed; E1 probe re-run: all 6 no-context shapes raise, ctx-A reads filtered, cross-org bulk update/delete rowcount 0, identity-map hit + UoW insert/update/delete of org-B rows raise",
+        "fixed": [
+          "E1-1",
+          "E1-2",
+          "E1-3",
+          "E1-4",
+          "E1-5",
+          "E1-6",
+          "E1-7",
+          "E1-9 helper",
+          "E1-10 contract",
+          "E1-11",
+          "E1-13",
+          "E1-14",
+          "E1-15"
+        ],
+        "open_for_BC": [
+          "E1-8",
+          "E1-10 rules",
+          "E1-12"
+        ],
+        "accepted": [
+          "E1-16"
+        ]
+      }
+    }
+  },
+  "version": "3.0.0"
+}

@@ -1,0 +1,22 @@
+# Ruflo local secrets and runtime data
+.env
+.env.local
+.env.*.local
+.claude-flow/data/
+.claude-flow/logs/
+.claude-flow/sessions/
+.swarm/
+# stray tool output (a hook wrote to an unset path)
+undefined/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# Frontend
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
